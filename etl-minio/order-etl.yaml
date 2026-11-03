@@ -13,9 +13,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: order-etl-config
-  namespace: default
 data:
-  MYSQL_HOST: "mysql"
+  MYSQL_HOST: "mysql.default.svc.cluster.local"
   MYSQL_PORT: "3306"
   MYSQL_USER: "root"
   MYSQL_DATABASE: "orderdb"
@@ -23,14 +22,13 @@ data:
   # 예시 주소: kubectl get svc -A로 실제 S3 Service/namespace/포트를 확인하세요.
   MINIO_ENDPOINT: "https://aistor-server.aistor-server.svc.cluster.local:443"
   MINIO_BUCKET: "warehouse"
-  MINIO_PREFIX: "raw/orders_step1/"
+  MINIO_PREFIX: "raw/stud04/"
   CREATE_BUCKET: "true"
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: order-etl-secret
-  namespace: default
 type: Opaque
 stringData:
   MYSQL_PASSWORD: "root1234"
@@ -41,7 +39,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-etl
-  namespace: default
 spec:
   # 코드의 checkpoint를 단일 ETL이 갱신하므로 1개 유지.
   replicas: 1
@@ -67,7 +64,7 @@ spec:
       #   - name: registry-credentials
       containers:
         - name: etl
-          image: "yklee2002/etl-minio"
+          image: "minzunmik/etl-minio"
           imagePullPolicy: Always
           command: ["python", "-u", "/app/etl_orders_minio.py"]
           envFrom:

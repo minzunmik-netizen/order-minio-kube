@@ -37,7 +37,7 @@ class Settings:
     access_key: str
     secret_key: str
     bucket: str = "warehouse"
-    prefix: str = "raw/orders_step1/"
+    prefix: str = "raw/stud04/"
     db_timezone: str = DB_TIMEZONE
     display_timezone: str = DISPLAY_TIMEZONE
     verify: bool | str = True
@@ -49,7 +49,7 @@ class Settings:
         ca = os.getenv("MINIO_CA_BUNDLE")
         if verify and ca:
             verify = ca
-        prefix = os.getenv("MINIO_PREFIX", "raw/orders_step1/").strip("/")
+        prefix = os.getenv("MINIO_PREFIX", "raw/stud04/").strip("/")
         if not prefix:
             raise ValueError("MINIO_PREFIX를 지정하세요.")
         return cls(os.environ["MINIO_ENDPOINT"], os.environ["MINIO_ACCESS_KEY"],

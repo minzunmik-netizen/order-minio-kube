@@ -21,13 +21,13 @@ spec:
 
         - name: order-simulator
 
-          image: yklee2002/order-simulator
+          image: minzunmik/order-simulator
 
           imagePullPolicy: Always
 
           env:
             - name: DB_HOST
-              value: "mysql"
+              value: "mysql.default.svc.cluster.local"
 
             - name: DB_PORT
               value: "3306"
